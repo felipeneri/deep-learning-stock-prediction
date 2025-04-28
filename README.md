@@ -187,7 +187,7 @@ _VALE3.SA - Preço Real vs. Sinais Previstos (Teste: Fev/2019-Jan/2024)._
 
 Como exploração adicional (opcional conforme o desafio), realizamos um backtesting para simular o desempenho financeiro de uma estratégia de trading simples baseada nos sinais do modelo CNN-LSTM.
 
-- **Período:** Janeiro de 2024 a Maio de 2024.
+- **Período:** Janeiro de 2024 a Abril de 2025.
 - **Fonte de Dados:** Cotações diárias obtidas via `yfinance`.
 - **Modelo:** CNN-LSTM treinado.
 - **Estratégia:**
@@ -219,7 +219,7 @@ _Resultado (Jan/24-Mai/Abr/2025): Estratégia -2.36% vs Buy & Hold -34.11%._
 ![Gráfico Backtest VALE3.SA](images/backtesting/VALE3_SA_backtesting.png)
 _Resultado (Jan/24-Mai/Abr/2025): Estratégia -3.71% vs Buy & Hold -15.58%._
 
-_Análises mais detalhadas do backtesting, incluindo métricas como Sharpe Ratio e Volatilidade, estão no notebook `05_Backtesting_Evaluation.ipynb`._
+_Análises mais detalhadas do backtesting, incluindo métricas como Sharpe Ratio e Volatilidade, estão no notebook `backtest_presentation_notebook.ipynb`._
 
 ## Conclusão
 
