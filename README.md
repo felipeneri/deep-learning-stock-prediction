@@ -92,7 +92,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 93.67%
 - **AUC Score:** 0.9861
 - **Matriz de Confusão:**
-  ![Matriz de Confusão PETR4](images/model_performance/PETR4_confusion_matrix.png)
+![Matriz de Confusão PETR4](images/model_performance/PETR4_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
@@ -103,7 +103,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 
     accuracy                           0.94      1169
    macro avg       0.94      0.94      0.94      1169
-  weighted avg       0.94      0.94      0.94      1169
+  weighted avg     0.94      0.94      0.94      1169
   ```
 
 ### BBAS3.SA (Modelo CNN-LSTM)
@@ -111,7 +111,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 96.52%
 - **AUC Score:** 0.9958
 - **Matriz de Confusão:**
-  ![Matriz de Confusão BBAS3](images/model_performance/BBAS3_confusion_matrix.png)
+![Matriz de Confusão BBAS3](images/model_performance/BBAS3_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
@@ -122,7 +122,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 
     accuracy                           0.97      1151
    macro avg       0.96      0.96      0.96      1151
-  weighted avg       0.97      0.97      0.97      1151
+  weighted avg     0.97      0.97      0.97      1151
   ```
 
 ### CSNA3.SA (Modelo CNN-LSTM)
@@ -130,7 +130,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 95.75%
 - **AUC Score:** 0.9950
 - **Matriz de Confusão:**
-  ![Matriz de Confusão CSNA3](images/model_performance/CSNA3_confusion_matrix.png)
+![Matriz de Confusão CSNA3](images/model_performance/CSNA3_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
@@ -141,7 +141,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 
     accuracy                           0.96      1152
    macro avg       0.96      0.95      0.96      1152
-  weighted avg       0.96      0.96      0.96      1152
+  weighted avg     0.96      0.96      0.96      1152
   ```
 
 ### VALE3.SA (Modelo CNN-LSTM)
@@ -149,7 +149,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 94.18%
 - **AUC Score:** 0.9918
 - **Matriz de Confusão:**
-  ![Matriz de Confusão VALE3](images/model_performance/VALE3_confusion_matrix.png)
+![Matriz de Confusão VALE3](images/model_performance/VALE3_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
@@ -160,7 +160,7 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 
     accuracy                           0.94      1169
    macro avg       0.94      0.94      0.94      1169
-  weighted avg       0.94      0.94      0.94      1169
+  weighted avg     0.94      0.94      0.94      1169
   ```
 
 **Gráficos de Sinais Previstos vs. Preço Real:**
@@ -187,7 +187,7 @@ _VALE3.SA - Preço Real vs. Sinais Previstos (Teste: Fev/2019-Jan/2024)._
 
 Como exploração adicional (opcional conforme o desafio), realizamos um backtesting para simular o desempenho financeiro de uma estratégia de trading simples baseada nos sinais do modelo CNN-LSTM.
 
-- **Período:** Janeiro de 2024 a Maio de 2024 _(Verifique se o ano final 2025 estava correto ou se era 2024)_.
+- **Período:** Janeiro de 2024 a Maio de 2024.
 - **Fonte de Dados:** Cotações diárias obtidas via `yfinance`.
 - **Modelo:** CNN-LSTM treinado.
 - **Estratégia:**
@@ -225,9 +225,9 @@ _Análises mais detalhadas do backtesting, incluindo métricas como Sharpe Ratio
 
 Este projeto desenvolveu e avaliou modelos de Deep Learning (principalmente CNN-LSTM) para prever tendências de compra/venda em 4 ações brasileiras, utilizando dados dos últimos 15 dias, conforme proposto no desafio.
 
-Os modelos apresentaram alta performance no conjunto de teste, com acurácias variando entre 93.67% (PETR4) e 96.52% (BBAS3), e AUC Scores consistentemente acima de 0.98, indicando boa capacidade de discriminação entre as classes de Compra e Venda. _(Exemplo de preenchimento - ajuste com sua interpretação!)_.
+Os modelos apresentaram alta performance no conjunto de teste, com acurácias variando entre 93.67% (PETR4) e 96.52% (BBAS3), e AUC Scores consistentemente acima de 0.98, indicando boa capacidade de discriminação entre as classes de Compra e Venda.
 
-O backtesting opcional em período posterior aos dados de teste (Jan 2024 - Mai 202X) indicou que a estratégia baseada no modelo CNN-LSTM superou o Buy & Hold para PETR4, CSNA3 e VALE3, mas ficou abaixo para BBAS3, utilizando limiares fixos. Isso sugere potencial, mas reforça a necessidade de otimização por ativo e a cautela com resultados passados.
+O backtesting opcional em período posterior aos dados de teste (Jan 2024 - Abr 2025) indicou que a estratégia baseada no modelo CNN-LSTM superou o Buy & Hold para PETR4, CSNA3 e VALE3, mas ficou abaixo para BBAS3, utilizando limiares fixos. Isso sugere potencial, mas reforça a necessidade de otimização por ativo e a cautela com resultados passados.
 
 **Limitações e Próximos Passos:**
 
