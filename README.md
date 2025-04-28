@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Este projeto implementa modelos de Deep Learning (utilizando TensorFlow/Keras) para análise e previsão de tendências em ações do mercado financeiro brasileiro, como parte de um desafio de Ciência de Dados. O objetivo principal é desenvolver um sistema "perseguidor de tendência" capaz de gerar sinais de compra (+1) ou venda (-1) para 4 ações específicas (VALE3, PETR4, BBAS3 e CSNA3), baseando-se no comportamento dos preços ou indicadores visuais dos últimos 15 dias.
+Este projeto implementa modelos de Deep Learning (utilizando TensorFlow/Keras) para análise e previsão de tendências em ações do mercado financeiro brasileiro, como parte de um desafio de Ciência de Dados. O objetivo principal é desenvolver um sistema "perseguidor de tendência" capaz de gerar sinais de compra (1) ou venda (0) para 4 ações específicas (VALE3, PETR4, BBAS3 e CSNA3), baseando-se no comportamento dos preços ou indicadores visuais dos últimos 15 dias.
 
 A abordagem segue a proposta do desafio, utilizando dados históricos rotulados por economistas que classificaram cada dia como uma oportunidade de compra ou venda após uma suavização dos preços de fechamento.
 
@@ -92,17 +92,18 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 93.67%
 - **AUC Score:** 0.9861
 - **Matriz de Confusão:**
-![Matriz de Confusão PETR4](images/model_performance/PETR4_confusion_matrix.png)
+
+  ![Matriz de Confusão PETR4](images/model_performance/PETR4_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
               precision    recall  f1-score   support
 
-   Venda (0)       0.97      0.90      0.93       568
-  Compra (1)       0.91      0.97      0.94       601
+     Venda (0)     0.97      0.90      0.93       568
+    Compra (1)     0.91      0.97      0.94       601
 
-    accuracy                           0.94      1169
-   macro avg       0.94      0.94      0.94      1169
+      accuracy                         0.94      1169
+     macro avg     0.94      0.94      0.94      1169
   weighted avg     0.94      0.94      0.94      1169
   ```
 
@@ -111,17 +112,18 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 96.52%
 - **AUC Score:** 0.9958
 - **Matriz de Confusão:**
-![Matriz de Confusão BBAS3](images/model_performance/BBAS3_confusion_matrix.png)
+
+  ![Matriz de Confusão BBAS3](images/model_performance/BBAS3_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
               precision    recall  f1-score   support
 
-   Venda (0)       0.97      0.97      0.97       664
-  Compra (1)       0.96      0.96      0.96       487
+     Venda (0)     0.97      0.97      0.97       664
+    Compra (1)     0.96      0.96      0.96       487
 
-    accuracy                           0.97      1151
-   macro avg       0.96      0.96      0.96      1151
+      accuracy                         0.97      1151
+     macro avg     0.96      0.96      0.96      1151
   weighted avg     0.97      0.97      0.97      1151
   ```
 
@@ -130,17 +132,18 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 95.75%
 - **AUC Score:** 0.9950
 - **Matriz de Confusão:**
-![Matriz de Confusão CSNA3](images/model_performance/CSNA3_confusion_matrix.png)
+
+  ![Matriz de Confusão CSNA3](images/model_performance/CSNA3_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
               precision    recall  f1-score   support
 
-   Venda (0)       0.95      0.98      0.96       671
-  Compra (1)       0.97      0.93      0.95       481
+     Venda (0)     0.95      0.98      0.96       671
+    Compra (1)     0.97      0.93      0.95       481
 
-    accuracy                           0.96      1152
-   macro avg       0.96      0.95      0.96      1152
+      accuracy                         0.96      1152
+      macro av     0.96      0.95      0.96      1152
   weighted avg     0.96      0.96      0.96      1152
   ```
 
@@ -149,23 +152,24 @@ A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de 
 - **Acurácia:** 94.18%
 - **AUC Score:** 0.9918
 - **Matriz de Confusão:**
+
 ![Matriz de Confusão VALE3](images/model_performance/VALE3_confusion_matrix.png)
 - **Relatório de Classificação:**
 
   ```
               precision    recall  f1-score   support
 
-   Venda (0)       0.95      0.94      0.94       598
-  Compra (1)       0.94      0.94      0.94       571
+     Venda (0)     0.95      0.94      0.94       598
+    Compra (1)     0.94      0.94      0.94       571
 
-    accuracy                           0.94      1169
-   macro avg       0.94      0.94      0.94      1169
+      accuracy                         0.94      1169
+     macro avg     0.94      0.94      0.94      1169
   weighted avg     0.94      0.94      0.94      1169
   ```
 
 **Gráficos de Sinais Previstos vs. Preço Real:**
 
-Os gráficos abaixo ilustram a aderência entre os sinais (+1 Compra, -1 Venda) previstos pelo modelo CNN-LSTM e o comportamento real dos preços no período de teste.
+Os gráficos abaixo ilustram a aderência entre os sinais (1 Compra, 0 Venda) previstos pelo modelo CNN-LSTM e o comportamento real dos preços no período de teste.
 
 **PETR4.SA:**
 ![Preço vs Sinais PETR4.SA](images/price_vs_predicted_signals/PETR4_SA_price_vs_signals.png)
