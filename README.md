@@ -2,51 +2,24 @@
 
 ## Introdução
 
-Este projeto implementa modelos de Deep Learning para análise e previsão de tendências em ações do mercado financeiro brasileiro. O objetivo principal é desenvolver um sistema capaz de identificar tendências de alta ou baixa para 4 ações específicas (VALE3, PETR4, BBAS3 e CSNA3), baseando-se no comportamento dos preços nos últimos 15 dias.
+Este projeto implementa modelos de Deep Learning (utilizando TensorFlow/Keras) para análise e previsão de tendências em ações do mercado financeiro brasileiro, como parte de um desafio de Ciência de Dados. O objetivo principal é desenvolver um sistema "perseguidor de tendência" capaz de gerar sinais de compra (+1) ou venda (-1) para 4 ações específicas (VALE3, PETR4, BBAS3 e CSNA3), baseando-se no comportamento dos preços ou indicadores visuais dos últimos 15 dias.
 
-A proposta é criar um modelo "perseguidor de tendência", ou seja, que recomende a compra quando a tendência é de alta e a venda quando a tendência é de baixa. O sistema utiliza dados históricos rotulados por economistas, que realizaram uma suavização dos preços de fechamento e classificaram cada dia como uma oportunidade de compra (+1) ou venda (-1).
+A abordagem segue a proposta do desafio, utilizando dados históricos rotulados por economistas que classificaram cada dia como uma oportunidade de compra ou venda após uma suavização dos preços de fechamento.
 
 ## Pré-requisitos
 
-### Deep Learning
+Certifique-se de ter o ambiente configurado corretamente. As principais bibliotecas e versões utilizadas (alinhadas com o ambiente sugerido no desafio) são:
 
-- TensorFlow 2.15.0
-- TensorFlow-macos 2.13.0
-- TensorFlow-metal 1.0.0
-- Keras 2.13.1
-- Keras-tuner 1.4.7
+- **Python:** 3.10.9
+- **Deep Learning:** TensorFlow >= 2.13, Keras >= 2.13, Keras-Tuner
+- **Manipulação e Análise de Dados:** Pandas, NumPy, SciPy, Statsmodels
+- **Visualização:** Matplotlib, Seaborn, Plotly
+- **Machine Learning:** Scikit-learn
+- **Análise Técnica:** TA-Lib, TA (Opcional, dependendo das features exploradas)
+- **Processamento de Imagens:** Pillow (Para modelos CNN 2D)
+- **Ambiente:** Jupyter, JupyterLab
 
-### Manipulação e Análise de Dados
-
-- Python 3.13.2
-- Pandas 2.1.3
-- NumPy 1.26.4
-- SciPy 1.12.0
-- Statsmodels 0.14.0
-
-### Visualização
-
-- Matplotlib 3.8.2
-- Seaborn 0.13.2
-- Plotly 5.18.0
-
-### Machine Learning
-
-- Scikit-learn 1.3.2
-
-### Análise Técnica
-
-- TA-Lib 0.4.19
-- TA 0.11.0
-
-### Processamento de Imagens
-
-- Pillow 10.1.0
-
-### Ambiente de Desenvolvimento
-
-- Jupyter 1.0.0
-- JupyterLab 4.4.0
+_(Nota: Uma lista completa está disponível em `requirements.txt`)_
 
 ## Estrutura do Projeto
 
@@ -57,6 +30,7 @@ A proposta é criar um modelo "perseguidor de tendência", ou seja, que recomend
 │   ├── BBAS3.SA/          # Dados do Banco do Brasil
 │   └── CSNA3.SA/          # Dados da CSN
 ├── images/                # Visualizações e gráficos gerados
+│   ├── model_performance/ # Gráficos de métricas (Matriz de Confusão, etc.)
 │   ├── backtesting/       # Gráficos de resultados do backtesting
 │   └── price_vs_predicted_signals/ # Gráficos de preços vs sinais previstos
 ├── models/                # Modelos treinados salvos
@@ -81,136 +55,185 @@ A proposta é criar um modelo "perseguidor de tendência", ou seja, que recomend
 
 ## Configuração do Ambiente
 
-1. Clone o repositório:
+1.  Clone o repositório:
+    ```bash
+    git clone https://github.com/felipeneri/deep-learning-stock-prediction
+    cd deep-learning-stock-prediction
+    ```
+2.  Crie um ambiente virtual (recomendado Conda, conforme desafio) e ative-o:
+    ```bash
+    conda create -n task-stock python=3.10
+    conda activate task-stock
+    ```
+3.  Instale as dependências:
+    ```bash
+    pip install -r requirements.txt
+    # Pode ser necessário instalar o TA-Lib separadamente dependendo do seu sistema operacional.
+    # Consulte a documentação do TA-Lib: https://github.com/mrjbq7/ta-lib
+    ```
 
-```bash
-git clone <url-do-repositorio>
-cd ml-task-stock
-```
+## Modelos Desenvolvidos
 
-2. Crie um ambiente virtual e ative-o:
+Foram explorados diferentes modelos de Deep Learning, conforme sugerido e permitido pelo desafio, focando principalmente em arquiteturas capazes de processar sequências temporais (últimos 15 dias):
 
-```bash
-conda create -n task-stock python=3.10
-conda activate task-stock
-```
+- **CNN-LSTM:** Modelo híbrido combinando camadas convolucionais (para extração de padrões locais na sequência) e camadas LSTM (para captura de dependências temporais). Este foi o modelo principal avaliado.
+- **(Opcional) CNN 1D:** Utilizando diretamente a sequência de 15 preços como entrada.
+- **(Opcional) RNN/LSTM Puro:** Modelos recorrentes puros.
+- **(Opcional) CNN 2D:** Utilizando as imagens fornecidas (gráficos de barras normalizados dos últimos 15 dias) como entrada.
 
-3. Instale as dependências:
+Os detalhes da arquitetura, treinamento e otimização de hiperparâmetros para cada modelo podem ser encontrados nos respectivos Jupyter Notebooks na pasta `notebooks/`.
 
-```bash
-pip install -r requirements.txt
-```
+## Avaliação de Desempenho (Conjunto de Teste)
 
-## Resumo de Desempenho dos Modelos
+A performance dos modelos foi avaliada no conjunto de teste fornecido (dados de meados de 2019 até Dezembro de 2023), utilizando as métricas obrigatórias solicitadas no desafio.
 
-Nesta seção, apresentamos um breve panorama dos principais resultados alcançados e a performance de cada modelo testado. Os gráficos abaixo, disponíveis em `images/price_vs_predicted_signals/`, ilustram a aderência entre os sinais previstos e o comportamento real dos preços para cada ação.
+### PETR4.SA (Modelo CNN-LSTM)
 
-**PETR4.SA:**  
+- **Acurácia:** 93.67%
+- **AUC Score:** 0.9861
+- **Matriz de Confusão:**
+  ![Matriz de Confusão PETR4](images/model_performance/PETR4_confusion_matrix.png)
+- **Relatório de Classificação:**
+
+  ```
+              precision    recall  f1-score   support
+
+   Venda (0)       0.97      0.90      0.93       568
+  Compra (1)       0.91      0.97      0.94       601
+
+    accuracy                           0.94      1169
+   macro avg       0.94      0.94      0.94      1169
+  weighted avg       0.94      0.94      0.94      1169
+  ```
+
+### BBAS3.SA (Modelo CNN-LSTM)
+
+- **Acurácia:** 96.52%
+- **AUC Score:** 0.9958
+- **Matriz de Confusão:**
+  ![Matriz de Confusão BBAS3](images/model_performance/BBAS3_confusion_matrix.png)
+- **Relatório de Classificação:**
+
+  ```
+              precision    recall  f1-score   support
+
+   Venda (0)       0.97      0.97      0.97       664
+  Compra (1)       0.96      0.96      0.96       487
+
+    accuracy                           0.97      1151
+   macro avg       0.96      0.96      0.96      1151
+  weighted avg       0.97      0.97      0.97      1151
+  ```
+
+### CSNA3.SA (Modelo CNN-LSTM)
+
+- **Acurácia:** 95.75%
+- **AUC Score:** 0.9950
+- **Matriz de Confusão:**
+  ![Matriz de Confusão CSNA3](images/model_performance/CSNA3_confusion_matrix.png)
+- **Relatório de Classificação:**
+
+  ```
+              precision    recall  f1-score   support
+
+   Venda (0)       0.95      0.98      0.96       671
+  Compra (1)       0.97      0.93      0.95       481
+
+    accuracy                           0.96      1152
+   macro avg       0.96      0.95      0.96      1152
+  weighted avg       0.96      0.96      0.96      1152
+  ```
+
+### VALE3.SA (Modelo CNN-LSTM)
+
+- **Acurácia:** 94.18%
+- **AUC Score:** 0.9918
+- **Matriz de Confusão:**
+  ![Matriz de Confusão VALE3](images/model_performance/VALE3_confusion_matrix.png)
+- **Relatório de Classificação:**
+
+  ```
+              precision    recall  f1-score   support
+
+   Venda (0)       0.95      0.94      0.94       598
+  Compra (1)       0.94      0.94      0.94       571
+
+    accuracy                           0.94      1169
+   macro avg       0.94      0.94      0.94      1169
+  weighted avg       0.94      0.94      0.94      1169
+  ```
+
+**Gráficos de Sinais Previstos vs. Preço Real:**
+
+Os gráficos abaixo ilustram a aderência entre os sinais (+1 Compra, -1 Venda) previstos pelo modelo CNN-LSTM e o comportamento real dos preços no período de teste.
+
+**PETR4.SA:**
 ![Preço vs Sinais PETR4.SA](images/price_vs_predicted_signals/PETR4_SA_price_vs_signals.png)
-**PETR4.SA - Preço Real vs. Sinais Previstos.** Gráfico comparando a evolução do preço de fechamento real de PETR4.SA (linha verde) com os sinais de Compra (▲) e Venda (▼) gerados pelo modelo CNN-LSTM para o dia seguinte, no período de Fev/2019 a Jan/2024.
+_PETR4.SA - Preço Real vs. Sinais Previstos (Teste: Fev/2019-Jan/2024)._
 
-**BBAS3.SA:**  
+**BBAS3.SA:**
 ![Preço vs Sinais BBAS3.SA](images/price_vs_predicted_signals/BBAS3_SA_price_vs_signals.png)
-**BBAS3.SA - Preço Real vs. Sinais Previstos.** Gráfico comparando a evolução do preço de fechamento real de BBAS3.SA (linha verde) com os sinais de Compra (▲) e Venda (▼) gerados pelo modelo CNN-LSTM para o dia seguinte, no período de Abr/2019 a Jan/2024.
+_BBAS3.SA - Preço Real vs. Sinais Previstos (Teste: Abr/2019-Jan/2024)._
 
-**CSNA3.SA:**  
+**CSNA3.SA:**
 ![Preço vs Sinais CSNA3.SA](images/price_vs_predicted_signals/CSNA3_SA_price_vs_signals.png)
-**CSNA3.SA - Preço Real vs. Sinais Previstos.** Gráfico comparando a evolução do preço de fechamento real de CSNA3.SA (linha verde) com os sinais de Compra (▲) e Venda (▼) gerados pelo modelo CNN-LSTM para o dia seguinte, no período de Abr/2019 a Jan/2024.
+_CSNA3.SA - Preço Real vs. Sinais Previstos (Teste: Abr/2019-Jan/2024)._
 
-**VALE3.SA:**  
+**VALE3.SA:**
 ![Preço vs Sinais VALE3.SA](images/price_vs_predicted_signals/VALE3_SA_price_vs_signals.png)
-**VALE3.SA - Preço Real vs. Sinais Previstos.** Gráfico comparando a evolução do preço de fechamento real de VALE3.SA (linha verde) com os sinais de Compra (▲) e Venda (▼) gerados pelo modelo CNN-LSTM para o dia seguinte, no período de Fev/2019 a Jan/2024.
+_VALE3.SA - Preço Real vs. Sinais Previstos (Teste: Fev/2019-Jan/2024)._
 
----
+## Backtesting da Estratégia (Avaliação Financeira Opcional)
 
-# Backtesting de Estratégia de Trading com Modelo CNN-LSTM
+Como exploração adicional (opcional conforme o desafio), realizamos um backtesting para simular o desempenho financeiro de uma estratégia de trading simples baseada nos sinais do modelo CNN-LSTM.
 
-## Metodologia: Backtesting
+- **Período:** Janeiro de 2024 a Maio de 2024 _(Verifique se o ano final 2025 estava correto ou se era 2024)_.
+- **Fonte de Dados:** Cotações diárias obtidas via `yfinance`.
+- **Modelo:** CNN-LSTM treinado.
+- **Estratégia:**
+  - Comprar na abertura do dia seguinte se Prob(Preço Subir) > `BUY_THRESHOLD` (ex: 0.70) e não houver posição.
+  - Vender na abertura do dia seguinte se Prob(Preço Subir) < `SELL_THRESHOLD` (ex: 0.40) e houver posição comprada.
+  - Manter posição caso contrário.
+- **Simplificações:** Não considera custos de transação, slippage, impacto no preço ou dividendos (além do preço ajustado).
+- **Comparação:** Desempenho da estratégia vs. Buy & Hold (comprar no início e vender no final).
 
-O backtesting é uma técnica essencial para avaliar a viabilidade de uma estratégia de trading, aplicando-a a dados históricos de mercado. Ele permite simular como a estratégia teria performado no passado, fornecendo insights sobre sua potencial lucratividade e risco antes de aplicá-la em tempo real.
+**Resultados Visuais do Backtesting:**
 
-## O Modelo: CNN-LSTM
+Os gráficos comparam o retorno acumulado da estratégia (azul/roxo) com o Buy & Hold (laranja) para um capital inicial de R$ 10.000. Marcadores indicam pontos de compra (`^`) e venda (`v`).
 
-Utilizamos um modelo híbrido CNN-LSTM que foi treinado separadamente para cada ação. A arquitetura combina:
-
-- **CNN:** Para extrair features espaciais e padrões locais das sequências de indicadores técnicos.
-- **LSTM:** Para capturar dependências temporais e sequenciais nos dados.
-
-O modelo foi treinado para prever a probabilidade de o preço da ação **subir** no dia seguinte, com base em uma janela (`N_STEPS`) de dados históricos e indicadores técnicos.
-
-## Dados e Features
-
-- **Fonte de Dados:** Os dados históricos de cotações para o backtesting foram obtidos via biblioteca `yfinance`, acessando o Yahoo Finance. Os dados utilizados para o backtesting compreendem o período de janeiro de **2024 até o dia atual (2025)**, com 90 dias extras antes da data inicial (final de 2023) para permitir o cálculo adequado das features iniciais que requerem dados históricos.
-- **Engenharia de Features:** Para alimentar o modelo, calculamos diversos indicadores técnicos, incluindo:
-  - Médias Móveis (SMA, EMA)
-  - MACD (Linha, Sinal, Histograma)
-  - RSI (Índice de Força Relativa)
-  - ROC (Taxa de Variação)
-  - Bandas de Bollinger
-  - Retornos percentuais diários e acumulados em diferentes janelas passadas.
-- **Pré-processamento:** As features selecionadas (as mesmas usadas no treino do modelo) foram escalonadas para o intervalo [0, 1] usando `MinMaxScaler`.
-
-## Estratégia de Trading Simulada
-
-Implementamos uma estratégia baseada nos sinais de probabilidade gerados pelo modelo:
-
-1.  **Sinal de Compra:** Se a probabilidade prevista pelo modelo para o dia seguinte for **maior** que um limiar pré-definido (`BUY_THRESHOLD`, ex: 0.70) E não houver posição em aberto, uma ordem de compra é simulada na abertura do dia seguinte.
-2.  **Sinal de Venda:** Se a probabilidade prevista for **menor** que um limiar pré-definido (`SELL_THRESHOLD`, ex: 0.40) E houver uma posição comprada, uma ordem de venda é simulada na abertura do dia seguinte.
-3.  **Manutenção:** Caso contrário, a posição atual (comprado ou em caixa) é mantida.
-
-**Simplificações:** Esta simulação é simplificada e **não** considera:
-
-- Custos de transação (corretagem, taxas B3).
-- Slippage (diferença entre o preço esperado e o preço executado).
-- Impacto no preço por grandes volumes de negociação.
-- Dividendos ou outros eventos corporativos (além do ajuste no preço 'Adj Close').
-
-## Avaliação de Performance
-
-A performance da estratégia é avaliada comparando a evolução do capital simulado com a estratégia "Buy & Hold" (simplesmente comprar a ação no início do período e vender no final). As principais métricas incluem:
-
-- Retorno Total (%) da Estratégia vs. Buy & Hold.
-- Valor Final do Portfólio (R$).
-- Métricas de Risco/Retorno (como Volatilidade Anualizada e Sharpe Ratio - calculados no notebook).
-
-## Ações Analisadas
-
-Este backtest foi executado para as seguintes ações, como parte do desafio proposto:
-
-- **PETR4.SA** (Petrobras)
-- **BBAS3.SA** (Banco do Brasil)
-- **CSNA3.SA** (CSN)
-- **VALE3.SA** (Vale)
-
-## Resultados Visuais
-
-Abaixo, apresentamos os gráficos de "Retorno Acumulado vs. Buy & Hold" para cada uma das ações analisadas. Estes gráficos ilustram a evolução percentual do capital inicial ao longo do período de backtest para a estratégia CNN-LSTM (linha azul/roxa) em comparação com o Buy & Hold (linha laranja). Os marcadores indicam os pontos de compra (`^`) e venda (`v`) executados pela estratégia simulada.
-
-Para esta simulação específica, foram utilizados os seguintes limiares:
-
-- **BUY_THRESHOLD = 0.7**: Compra quando a probabilidade de alta é maior que 70%
-- **SELL_THRESHOLD = 0.4**: Vende quando a probabilidade de alta é menor que 40%
-
-É importante observar que esta abordagem de limiares fixos pode não ser a estratégia ideal. Cada ação possui características próprias e comportamentos distintos no mercado, o que sugere que a utilização de limiares específicos para cada ativo poderia potencialmente melhorar os resultados. Uma otimização individualizada dos valores de BUY_THRESHOLD e SELL_THRESHOLD para cada ação, baseada em suas características particulares e volatilidade histórica, poderia resultar em uma performance superior comparada à abordagem de valores predefinidos e uniformes.
+_(Nota: Os limiares (0.7/0.4) foram aplicados uniformemente. Otimização por ativo poderia gerar resultados diferentes.)_
 
 **PETR4.SA:**
 ![Gráfico Backtest PETR4.SA](images/backtesting/PETR4_SA_backtesting.png)
-**Resultado do Backtest para PETR4.SA.** O gráfico ilustra o desempenho acumulado da estratégia CNN-LSTM (azul) versus Buy & Hold (laranja) entre Jan/2024 e Mai/2025. A estratégia superou o Buy & Hold, finalizando o período com R$ 11.928,75 (+19.29%) contra R$ 10.890,93 (+8.91%) do Buy & Hold, partindo de R$ 10.000.
+_Resultado (Jan/24-Mai/Abr/2025): Estratégia +19.29% vs Buy & Hold +8.91%._
 
 **BBAS3.SA:**
 ![Gráfico Backtest BBAS3.SA](images/backtesting/BBAS3_SA_backtesting.png)
-**Resultado do Backtest para BBAS3.SA.** O gráfico ilustra o desempenho acumulado da estratégia CNN-LSTM (azul) versus Buy & Hold (laranja) entre Jan/2024 e Mai/2025. Neste caso, o Buy & Hold superou a estratégia, finalizando o período com R$ 11.843,57 (+18.44%) contra R$ 11.239,09 (+12.39%) da estratégia, partindo de R$ 10.000.
+_Resultado (Jan/24-Mai/Abr/2025): Estratégia +12.39% vs Buy & Hold +18.44%._
 
 **CSNA3.SA:**
 ![Gráfico Backtest CSNA3.SA](images/backtesting/CSNA3_SA_backtesting.png)
-**Resultado do Backtest para CSNA3.SA.** O gráfico ilustra o desempenho acumulado da estratégia CNN-LSTM (azul) versus Buy & Hold (laranja) entre Jan/2024 e Mai/2025. A estratégia superou significativamente o Buy & Hold, finalizando o período com R$ 9.763,92 (-2.36%) contra R$ 6.588,44 (-34.11%) do Buy & Hold, partindo de R$ 10.000.
+_Resultado (Jan/24-Mai/Abr/2025): Estratégia -2.36% vs Buy & Hold -34.11%._
 
 **VALE3.SA:**
 ![Gráfico Backtest VALE3.SA](images/backtesting/VALE3_SA_backtesting.png)
-**Resultado do Backtest para VALE3.SA.** O gráfico ilustra o desempenho acumulado da estratégia CNN-LSTM (azul) versus Buy & Hold (laranja) entre Jan/2024 e Mai/2025. A estratégia superou o Buy & Hold, finalizando o período com um capital de R$ 9.628,80 (-3.71%) contra R$ 8.441,53 (-15.58%) do Buy & Hold, partindo de R$ 10.000.
+_Resultado (Jan/24-Mai/Abr/2025): Estratégia -3.71% vs Buy & Hold -15.58%._
 
-## Conclusão Parcial
+_Análises mais detalhadas do backtesting, incluindo métricas como Sharpe Ratio e Volatilidade, estão no notebook `05_Backtesting_Evaluation.ipynb`._
 
-A análise dos gráficos e das métricas detalhadas (disponíveis no notebook `backtest_presentation_notebook.ipynb`) permite uma avaliação inicial da eficácia do modelo CNN-LSTM como gerador de sinais para a estratégia proposta no período histórico considerado. É fundamental notar as limitações da simulação (ausência de custos, etc.) e que **desempenho passado não é garantia de resultados futuros.**
+## Conclusão
 
----
+Este projeto desenvolveu e avaliou modelos de Deep Learning (principalmente CNN-LSTM) para prever tendências de compra/venda em 4 ações brasileiras, utilizando dados dos últimos 15 dias, conforme proposto no desafio.
+
+Os modelos apresentaram alta performance no conjunto de teste, com acurácias variando entre 93.67% (PETR4) e 96.52% (BBAS3), e AUC Scores consistentemente acima de 0.98, indicando boa capacidade de discriminação entre as classes de Compra e Venda. _(Exemplo de preenchimento - ajuste com sua interpretação!)_.
+
+O backtesting opcional em período posterior aos dados de teste (Jan 2024 - Mai 202X) indicou que a estratégia baseada no modelo CNN-LSTM superou o Buy & Hold para PETR4, CSNA3 e VALE3, mas ficou abaixo para BBAS3, utilizando limiares fixos. Isso sugere potencial, mas reforça a necessidade de otimização por ativo e a cautela com resultados passados.
+
+**Limitações e Próximos Passos:**
+
+- A performance pode variar com diferentes arquiteturas, features e otimizações.
+- O backtesting é simplificado e não reflete custos reais de operação.
+- Explorar features adicionais (sentimento de notícias, dados macroeconômicos).
+- Implementar estratégias de gerenciamento de risco mais robustas.
+
+Os Jupyter Notebooks fornecem todos os detalhes da implementação, treinamento e análise.
